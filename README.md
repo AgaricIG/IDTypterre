@@ -74,9 +74,6 @@ ouvrir les droits d'écriture pour l'utilisateur apache (www-data) sur les dossi
 - `./var/cache`
 - `./public/media`
 
-
-### Fin
-
 # Troubleshoot
 ### CORS:
 Si problème de CORS Allow-Origin, configurer le paramêtre CORS_ALLOW_ORIGIN dans `.env`
