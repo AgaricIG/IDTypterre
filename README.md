@@ -1,3 +1,5 @@
+![logo IDTypterre](public/images/IDTypTerres.png?raw=true "Logo")
+
 # Description du projet
 
 La finalité du projet est d’améliorer l’intégration des données sols dans le conseil en agronomie, en favorisant l’accès à des données sol adaptées et harmonisées (les Typterres) pour répondre aux besoins des outils et de leurs utilisateurs. Il fait notamment appel à des clés de détermination pour permettre l'identification des sols observés sur le terrain par rapport à un référentiel de sols IDTypterre.
