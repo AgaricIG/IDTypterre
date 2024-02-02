@@ -1,4 +1,4 @@
-![](./public/images/IDTypTerres.png)
+![logo IDTypterre](public/images/IDTypTerres.png?raw=true "Logo")
 
 # Description du projet
 
