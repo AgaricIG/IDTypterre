@@ -1,3 +1,11 @@
+# Description du projet
+
+La finalité du projet est d’améliorer l’intégration des données sols dans le conseil en agronomie, en favorisant l’accès à des données sol adaptées et harmonisées (les Typterres) pour répondre aux besoins des outils et de leurs utilisateurs. Il fait notamment appel à des clés de détermination pour permettre l'identification des sols observés sur le terrain par rapport à un référentiel de sols IDTypterre.
+
+Le projet est décrit plus en détail ici https://sols-et-territoires.org/projets/idtypterres
+
+L'Application IDTypterre est une application qui permet de saisir les clés de détermination et de les publier via une API et une applicaiton embarquée.
+
 # Installation
 ### requirements:
 - apache2
@@ -63,11 +71,5 @@ Pour change un mot de passe:
 Pour voir la liste des utilisateurs
 `php bin/console print:user`
 
-# altération des séquences (Changer la valeur)
-```
-alter sequence application_id_seq 	START with 1000000 ;
-alter sequence media_id_seq		START with 1000000 ;
-alter sequence fiche_suppl_id_seq 	START with 1000000 ;
-alter sequence questions_id_seq 	START with 1000000 ;
-alter sequence user_id_seq	 	START with 1000000 ;
+
 ```
