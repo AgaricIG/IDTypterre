@@ -1,0 +1,20 @@
+{% extends 'email/_base.html.twig' %}
+
+{% block content %}
+  {{ parent() }}
+        <row class="header">
+          <h1>Message from contact form</h1>
+        </row>
+        <spacer size="30"></spacer>
+        <row class="content">
+            <columns>
+                <p>
+                    <i>{{ content }}</i>
+                </p>
+                <p>
+                    <strong>from:</strong>{{ askerEmail }}<br>
+                    <strong>at:</strong> {{ date()| date('Y-m-d H:i')}},
+                </p>
+            </columns>
+        </row>
+{% endblock content %}

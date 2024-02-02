@@ -1,0 +1,43 @@
+{% extends 'admin/appli/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li><a href="{{ path('admin_appli_create') }}">Créer une application externe</a></li>
+{% endblock arianne %}
+
+{% block content %}
+
+          {{form_errors(form)}}
+          {{ form_start(form) }}
+              {{ form_row(form.name) }}
+              {{ form_row(form.url) }}
+              {{ form_row(form.apikey) }}
+              <a href="" onclick='randomApikey(); return false;'>Générer une clef API aléatoire</a>
+
+              <div class="form-buttons buttons mt-10">
+                <button type="submit" class="button ">Enregistrer</button>
+                <a class="button outlined" href="{{ path('admin_appli') }}">Retour</a>
+              </div>
+          {{ form_end(form) }}
+
+{% endblock %}
+
+{% block script %}
+  {{ parent() }}
+
+  <script type="text/javascript">
+    function randomApikey() {
+      var apikey = randomString(12);
+      document.querySelector('#application_form_apikey').value = apikey;
+    }
+
+    function randomString(length){
+          var text = "";
+          var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+          for(let i=0;i<=length;i++){
+                text +=possible[Math.floor(Math.random()*possible.length)]
+          }
+          return text
+    }
+  </script>
+{% endblock %}

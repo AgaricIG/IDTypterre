@@ -1,0 +1,81 @@
+{% extends 'admin/ucs/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li class="active"><a href=""><i>{{ ucs.name }}</i></a></li>
+{% endblock arianne %}
+
+{% block title %}
+  Arbre: {{ ucs.name }}
+{% endblock %}
+
+{% block content %}
+    <h2 style="text-align:center">Demonstration du module de détermination des sols:</h2>
+    <div style="position:relative; width:100%; height:500px">
+      <div id="container-tree" class="container-tree treeviewer"></div>
+    </div>
+{% endblock %}
+
+{% block onload %}
+
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+
+      /* Apisol */
+      _apisol = new TreeViewer('#container-tree', {
+        options: {
+          sendReports: false,
+          ChangeUCS: true,
+          ConfirmUTS: true,
+          UcsSpecialCode: false,
+        },
+        session: {
+          hosts: [
+            {% for app in applications %}
+            { name: "{{ app.name }}", apikey: "{{ app.apikey }}" },
+            {% endfor %}
+          ]
+        },
+        trans: {
+          'root_abbr': 'UC',
+          'root_title': 'Vous vous situez dans l\'Unité Cartographique suivante :',
+          'leaf_abbr': 'UTT',
+          'header': "Quel est le type de sol ?",
+        },
+        styles: {
+          tree: {
+            node: {color: '#d18a00', backgroundColor:'#fff7e8', borderWidth:1, borderColor:'#d18a00', padding:12, link: {color: '#AAA', weight: 3}},
+            root: {backgroundColor: '#fff ', color:'#d18a00', borderRadius: '0', borderColor:'#fff', borderWidth:2},
+            leaf: {backgroundColor: '#fff ', color:'#d18a00', borderRadius: '4', borderColor:'#d18a00', borderWidth:2},
+            current: {color: 'white', backgroundColor:'#d18a00', borderWidth:0, link: {color: '#AAA', weight: 3}},
+          }
+        },
+        urls: {
+          getucs: "{{ path('api_getucs', {id: ucs.id }) }}",
+          gettree: "{{ path('api_gettree', {id: '__id__' }) }}",
+          getquestion: "{{ path('api_getquestion', {ucs: '__ucs__', id: '__id__', coords: '__coords__' }) }}",
+          getuts: "{{ path('api_getuts', {ucs: '__ucs__', id: '__id__', coords: '__coords__' }) }}",
+          getutsbycode: "{{ path('api_getutsbycode', {ucs: '__ucs__', code: '__code__'}) }}",
+          getutsbydefault: "{{ path('api_getutsbydefault', {ucs: '__ucs__', question: '__question__'}) }}",
+          //setuts: 'http://apisol.agrocampus-ouest.fr/apisol-wps?service=WPS&version=1.0.0&request=execute&identifier=setuts&datainputs=id_uts=__uts__;id_session=__session__;level=__level__;profil=__profil__;branche=__branche__;__coords__&rawdataoutput=setutsreponse',
+          //confirmuts: '',
+          //infirmuts: '',
+          }
+      });
+
+      _apisol.$on('apisol:open', function(ev) { console.log('[Event] apisol:open', ev.detail) });
+      _apisol.$on('apisol:ucs:selection', function(ev) { console.log('[Event] apisol:ucs:selection', ev.detail);})
+      _apisol.$on('apisol:questions:loaded', function(ev) { console.log('[Event] apisol:questions:loaded', ev.detail) });
+      _apisol.$on('apisol:question', function(ev) { console.log('[Event] apisol:question', ev.detail);})
+      _apisol.$on('apisol:question:answered', function(ev) { console.log('[Event] apisol:question:answered', ev.detail);})
+      _apisol.$on('apisol:uts:found', function(ev) { console.log('[Event] apisol:uts:found', ev.detail);})
+      _apisol.$on('apisol:uts:confirm', function(ev) { console.log('[Event] apisol:uts:confirm', ev.detail);})
+      _apisol.$on('apisol:close', function(ev) { console.log('[Event] apisol:close', ev.detail) });
+      _apisol.$on('apisol:error', function(ev) { console.error('[Event] apisol:error', ev.detail) });
+
+      _apisol.openUcs({{ ucs.tree | json_encode()|raw }});
+
+  </script>
+{% endblock %}

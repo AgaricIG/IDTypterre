@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block page %}
+
+  <div class="container arianne">
+    <ul>
+    {% block arianne %}
+      <!-- -->
+    {% endblock %}
+    </ul>
+  </div>
+
+  <div class="container flashbag">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="notification is-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+  </div>
+
+  <div class="container main">
+
+    {% block content_title %}
+    <h1>» {% block title %}{% endblock %}</h1>
+    {% endblock %}
+
+    {% block content %}
+      <!-- -->
+    {% endblock content %}
+  </div>
+
+{% endblock page %}

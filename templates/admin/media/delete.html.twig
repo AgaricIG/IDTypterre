@@ -1,0 +1,31 @@
+{% extends 'admin/media/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+{% endblock arianne %}
+
+{% block content %}
+
+
+  <div class="modal-box">
+    <div class="title">Alerte</div>
+    <div class="content">
+      <p>
+      Ce média est associé aux questions suivantes. Il ne peut être supprimé.
+      </p>
+      <p>
+      {% for question in questions %}
+        <strong>⋅ {{ question.libelle }}</strong><br>
+      {% endfor %}
+      </p>
+    </div>
+
+    <div class="buttons">
+      <a class="button outlined" href="{{ path('admin_media') }}">Retour</a>
+    </div>
+  </div>
+
+  {# just a spacer #}
+  <div style="height:50vh"></div>
+
+{% endblock %}

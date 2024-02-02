@@ -1,0 +1,25 @@
+{% extends 'admin/users/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li><a href="{{ path('admin_user_create') }}">Créer un utilisateur</a></li>
+{% endblock arianne %}
+
+{% block page %}
+
+          {{form_errors(form)}}
+          {{ form_start(form) }}
+              {{ form_row(form.username) }}
+              {{ form_row(form.roles) }}
+              {{ form_row(form.email) }}
+              {{ form_row(form.plainPassword) }}
+              {{ form_row(form.fullname) }}
+              {{ form_row(form.active) }}
+
+              <div class="form-buttons buttons mt-10">
+                <button class="button is-link ">Enregister</button>
+                <a class="button outlined" href="{{ path('admin_users') }}">Retour</a>
+              </div>
+          {{ form_end(form) }}
+
+{% endblock %}

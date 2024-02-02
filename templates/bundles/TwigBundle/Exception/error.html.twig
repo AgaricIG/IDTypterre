@@ -1,0 +1,12 @@
+{% extends 'layout/error.html.twig' %}
+
+{% block title %}Error{% endblock %}
+
+{# default template for all errors  #}
+{% block content %}
+    <h1><span class="icon glyphicon glyphicon-exclamation-sign "></span> Oups, this is an Error {{ exception.code}} !</h1>
+
+    <p>
+        An error have occured while loading this page... Please contact administrators or <a href="{{ path('home') }}">return to the homepage</a>.
+    </p>
+{% endblock %}

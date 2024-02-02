@@ -1,0 +1,25 @@
+{% extends 'admin/users/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li class="active"><a href="{{ path('admin_user_edit', {id: user.id}) }}">{{ user.username }}</a></li>
+{% endblock arianne %}
+
+{% block page %}
+
+      {{form_errors(form)}}
+      {{ form_start(form) }}
+          {{ form_row(form.username) }}
+          {{ form_row(form.fullname) }}
+          {{ form_row(form.email) }}
+          {{ form_row(form.active) }}
+
+          <div class="form-buttons buttons mt-10">
+            <button class="button is-primary ">Sauvegarder</button>
+            <a class="button outlined" href="{{ path('admin_users') }}">Retour</a>
+            <a class="button is-outlined is-danger pull-right" href="{{ path('admin_user_delete', {id: user.id}) }}" onclick="confirm('Voulez vous vraiment supprimer cet utilisateur ?')">Supprimer</a>
+
+          </div>
+      {{ form_end(form) }}
+
+{% endblock %}

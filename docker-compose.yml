@@ -1,0 +1,67 @@
+version: '3'
+services:
+    apache:
+        image: httpd
+        volumes:
+            - ${PATH_SOURCE}/.docker/conf/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+            - ${PATH_SOURCE}/.docker/conf/apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+            - ${PATH_SOURCE}:/var/www/agaric/idtypeterre
+        ports:
+            - 80:80
+            - 443:443
+        restart: always
+        depends_on:
+            - php
+            - postgres
+
+    php:
+        build: .docker
+        restart: always
+        ports:
+            - 9000:9000
+        volumes:
+            - ${PATH_SOURCE}/.docker/conf/php/php.ini:/etc/php/7.3/cli/php.ini
+            - ${PATH_SOURCE}/.docker/conf/php/php.ini:/etc/php/7.3/fpm/php.ini
+            - ${PATH_SOURCE}:/var/www/agaric/idtypeterre
+        environment:
+            - PGDATESTYLE=ISO,DMY
+        working_dir: /var/www/agaric/idtypeterre
+
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+            - 8025:8025
+            - 1025:1025
+
+    adminer:
+       image: adminer
+       restart: always
+       ports:
+          - 81:8080
+
+    postgres:
+        image: mdillon/postgis:10
+        restart: always
+        environment:
+            - POSTGRES_DB=${PG_DATABASE}
+            - POSTGRES_USER=${PG_USERNAME}
+            - POSTGRES_PASSWORD=${PG_PASSWORD}
+            - PGDATESTYLE=ISO,DMY
+        ports:
+            - 5432:5432
+        volumes:
+            - tournesol-apisol-pgdata:/var/lib/postgresql/data
+            - ${PATH_SOURCE}:/var/www/agaric/idtypeterre
+            - ${PATH_SOURCE}/.docker/conf/postgres/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+
+    node:
+        image: node:10.15-stretch
+        tty: true
+        working_dir: /var/www/agaric/idtypeterre
+        volumes:
+            - ${PATH_SOURCE}:/var/www/agaric/idtypeterre
+        ports:
+            - 8000:8000
+volumes:
+    tournesol-apisol-pgdata:
+        external: true

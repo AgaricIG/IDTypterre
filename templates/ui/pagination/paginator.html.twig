@@ -1,0 +1,49 @@
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {#
+      <a class="pagination-previous" href="?page={{ pagination.previous }}" {% if not pagination.hasPrevious %} disabled {% endif %}>
+            &lArr;
+      </a>
+      <a class="pagination-next" href="?page={{ pagination.next }}" {% if not pagination.hasNext %} disabled {% endif %} >
+            &rArr;
+      </a>
+      #}
+      <ul class='pagination-list'>
+        <a class="pagination-link" href="?page={{ pagination.previous }}" {% if not pagination.hasPrevious %} disabled {% endif %}>&lArr;</a>
+      {% if pagination.current > 10 %}
+        <li data-page="1">
+          <a class="pagination-link" href="?page=1:;">1</a>
+        </li>
+        <li class="disabled">
+          <a class="pagination-ellipsis" href="javascript:return;" disabled>...</a>
+        </li>
+      {% endif %}
+      {% for i in 1..9 %}
+        {% set index = pagination.current - 10 + i %}
+        {% if index > 0 %}
+        <li data-page={{ index }}>
+          <a class="pagination-link" href="?page={{ index }}">{{ index }}</a>
+        </li>
+        {% endif %}
+      {% endfor %}
+        <li class="active" data-page="{{ pagination.current }}">
+            <a class="pagination-link is-current" href="?page={{ pagination.current }}" >{{ pagination.current }}</a>
+        </li>
+      {% for i in 1..10 %}
+        {% set index = pagination.current + i  %}
+        {% if index <= pagination.nbPage %}
+        <li data-page={{ index }}>
+          <a class="pagination-link" href="?page={{ index }}">{{ index }}</a>
+        </li>
+        {% endif %}
+      {% endfor %}
+      {% if pagination.nbPage - pagination.current > 10 %}
+        <li class="disabled">
+          <a class="pagination-ellipsis" href="javascript:return;" disabled>...</a>
+        </li>
+        <li data-page="{{ pagination.nbPage }}">
+          <a class="pagination-link" href="?page={{ pagination.nbPage }}">{{ pagination.nbPage }}</a>
+        </li>
+      {% endif %}
+      <a class="pagination-link" href="?page={{ pagination.next }}" {% if not pagination.hasNext %} disabled {% endif %}>&rArr;</a>
+    </ul>
+  </nav>

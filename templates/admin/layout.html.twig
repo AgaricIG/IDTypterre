@@ -1,0 +1,10 @@
+{% extends 'layout/centered.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li class="active"><a href="{{ path('admin') }}">Administration</a></li>
+{% endblock arianne %}
+
+{% block content %}
+  {{ parent() }}
+{% endblock %}

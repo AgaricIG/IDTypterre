@@ -1,0 +1,47 @@
+{% extends 'admin/question/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+{% endblock arianne %}
+
+{% block content %}
+  <form method="GET" class="form-search">
+    <div class="field">
+      <input type="text" name="search" class="input" placeholder="Rechercher" value="{{ app.request.query.get('search') }}">
+      <button type="submit" class="button outlined">OK</button>
+      <a class="button" href="{{ path('admin_question_create') }}">Ajouter une question</a>
+    </div>
+  </form>
+  <table class="table table-striped is-fullwidth is-narrow">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Libellé de la question </th>
+        <th style="text-align:center">Media associé</th>
+        <th></th>
+      </tr>
+    </thead>
+    {% for q in questions %}
+    <tr>
+      <td>{{ q.id }}</td>
+      <td>{{ q.libelle }}</td>
+      <td style="text-align:center">
+        {% if q.media %}
+          {% if q.media.type == 'video' %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.441 16.892c-2.102.144-6.784.144-8.883 0-2.276-.156-2.541-1.27-2.558-4.892.017-3.629.285-4.736 2.558-4.892 2.099-.144 6.782-.144 8.883 0 2.277.156 2.541 1.27 2.559 4.892-.018 3.629-.285 4.736-2.559 4.892zm-6.441-7.234l4.917 2.338-4.917 2.346v-4.684z"/></svg>
+          {% endif %}
+          {% if q.media.type == 'image' %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/></svg>
+          {% endif %}
+        {% else %}
+        -
+        {% endif %}
+      </td>
+      <td class="action">
+        <a class="button outlined" href="{{ path('admin_question_edit', {id: q.id}) }}"> Modifier</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% include('ui/pagination/paginator.html.twig') with {'pagination': pagination} %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'admin/appli/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+{% endblock arianne %}
+
+{% block content %}
+
+  <div class="modal-box">
+    <div class="title">Alerte</div>
+    <div class="content">
+      <p>
+      Attention, cette suppression est irréversible et empêchera toute exploitation des clefs de détermination par l'application "{{ appli.name}}".
+      </p>
+      <p>
+      Souhaitez-vous réellement supprimer cette application ?
+      </p>
+    </div>
+
+    <div class="buttons">
+      <a class="button" href="{{ path('admin_appli_delete_confirmed', {id: appli.id}) }}">Ok</a>
+      <a class="button outlined" href="{{ path('admin_appli') }}">Annuler</a>
+    </div>
+  </div>
+
+  {# just a spacer #}
+  <div style="height:50vh"></div>
+
+{% endblock %}

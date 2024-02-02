@@ -1,0 +1,49 @@
+{% extends 'admin/media/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li><a href="{{ path('admin_media_create') }}">Editer un média</a></li>
+{% endblock arianne %}
+
+{% block content %}
+
+          {{form_errors(form)}}
+          {{ form_start(form) }}
+
+              <div style="display:none">{{ form_row(form.id) }}</div>
+
+              {{ form_row(form.description) }}
+              {{ form_row(form.type) }}
+              <div class="field">
+              {{ form_row(form.file) }}
+              {{ form_row(form.url, { label: 'ou URL distante' }) }}
+              </div>
+
+              <div class="form-buttons buttons mt-10">
+                <button type="submit" class="button ">Sauvegarder</button>
+                <a class="button outlined" href="{{ path('admin_media') }}">Retour</a>
+              </div>
+          {{ form_end(form) }}
+
+{% endblock %}
+
+
+{% block script %}
+<script type="text/javascript">
+
+    const radios =  document.querySelectorAll('input[type=radio]')
+    radios.forEach(q => {
+      if(q.value == '') q.parentElement.parentElement.style.display = 'none';
+      q.addEventListener('change', onTypeChanged)
+
+    });
+
+  function onTypeChanged(ev) {
+    if(this.value == 'video') {
+      document.querySelector('#media_form_url').placeholder = 'ex: https://www.youtube.com/watch?v=wgIhdfDBXNA';
+    } else {
+      document.querySelector('#media_form_url').placeholder = 'ex: /images/texture_sol.png';
+    }
+  }
+</script>
+{% endblock %}

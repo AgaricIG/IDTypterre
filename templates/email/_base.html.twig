@@ -1,0 +1,38 @@
+{% apply inky_to_html|inline_css(source('@styles/emails-foundation.css'), source('@styles/emails-custom.css')) %}
+    <container>
+        <row class="header">
+            <columns>
+                <a href="{{ url('home') }}">
+                    <img src="{{ email.image('@images/nebula.png') }}" class="logo" alt="Nebulaweb Logo" />
+                </a>
+            </columns>
+        </row>
+
+        {% block content %}
+
+        {% endblock content %}
+
+        <row>
+            <columns>
+                <center>
+                    <button href="{{ url('home') }}">Go back to website</button>
+                </center>
+            </columns>
+        </row>
+        <row class="footer">
+            <columns>
+                <p>Cheers,</p>
+            </columns>
+        </row>
+        <row class="bottom">
+            <columns>
+                <center>
+                    <spacer size="20"></spacer>
+                    <div>
+                        Sent with ❤️ by Nebulaweb
+                    </div>
+                </center>
+            </columns>
+        </row>
+    </container>
+{% endapply %}

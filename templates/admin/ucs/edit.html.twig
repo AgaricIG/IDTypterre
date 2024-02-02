@@ -1,0 +1,24 @@
+{% extends 'admin/ucs/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li class="active"><a href="{{ path('admin_ucs_edit', {id: ucs.id}) }}">{{ ucs.name }}</a></li>
+{% endblock arianne %}
+
+{% block content %}
+
+      {{form_errors(form)}}
+      {{ form_start(form) }}
+          {{ form_row(form.id, { attr: { class: 'disabled' }}) }}
+          {{ form_row(form.name) }}
+          {{ form_row(form.geom) }}
+
+          <div class="form-buttons buttons mt-10">
+            <button type="submit" class="button ">Sauvegarder</button>
+            <a class="button outlined" href="{{ path('admin_ucs') }}">Retour</a>
+            <a class="button is-outlined is-danger pull-right" href="{{ path('admin_ucs_delete', {id: ucs.id}) }}" onclick="return confirm('Voulez vous vraiment supprimer cet élément ?')">Supprimer</a>
+
+          </div>
+      {{ form_end(form) }}
+
+{% endblock %}

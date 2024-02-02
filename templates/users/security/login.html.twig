@@ -1,0 +1,43 @@
+{% extends 'layout/centered.html.twig' %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+    <div class="w-50 mt-12 mx-auto">
+
+        <h1 style="text-align:center"><img style="max-width:500px" src="{{ asset('/images/accueil.png') }}" /><br>{{ env('BRAND_NAME')}}</h1>
+        <form method="post" class="form-login">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="notification is-info">
+                    <button class="delete"></button>
+                    You are already logged in as {{ app.user.username }} <a class="button is-primary " href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
+
+            <div class="field">
+                <label class="label" for="inputUsername">Utilisateur: </label>
+                <div class="control">
+                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="input" required autofocus>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="inputPassword">Mot de passe :</label>
+                <div class="control">
+                    <input type="password" name="password" id="inputPassword" class="input" required>
+                </div>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="buttons">
+                <button class="button " type="submit">
+                    Se connecter
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

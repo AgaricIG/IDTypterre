@@ -1,0 +1,14 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li><a href="{{ path('admin_users') }}">Utilisateurs</a></li>
+{% endblock arianne %}
+
+{% block title %}
+  Utilisateurs
+{% endblock %}
+
+{% block page %}
+  {{ parent() }}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'admin/media/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+{% endblock arianne %}
+
+{% block content %}
+  <form method="GET" class="form-search">
+    <div class="field">
+      <input type="text" name="search" class="input" placeholder="Rechercher" value="{{ app.request.query.get('search') }}">
+      <button type="submit" class="button outlined">OK</button>
+      <a class="button" href="{{ path('admin_media_create') }}">Ajouter</a>
+    </div>
+  </form>
+  <div class="medias">
+    {% if medias | length == 0 %}
+    <div class="empty">Pas encore de média ici...</div>
+    {% endif %}
+
+    {% for media in medias %}
+      {% include 'admin/media/ui_media_item.html.twig' with { 'media': media } %}
+    {% endfor %}
+  </div>
+  {% include('ui/pagination/paginator.html.twig') with {'pagination': pagination} %}
+{% endblock %}

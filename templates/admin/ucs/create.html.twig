@@ -1,0 +1,22 @@
+{% extends 'admin/ucs/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li><a href="{{ path('admin_ucs_create') }}">Création</a></li>
+{% endblock arianne %}
+
+{% block content %}
+
+          {{form_errors(form)}}
+          {{ form_start(form) }}
+              {{ form_row(form.id) }}
+              {{ form_row(form.name) }}
+              {{ form_row(form.geom) }}
+
+              <div class="form-buttons buttons mt-10">
+                <button type="submit" class="button ">Sauvegarder</button>
+                <a class="button outlined" href="{{ path('admin_ucs') }}">Retour</a>
+              </div>
+          {{ form_end(form) }}
+
+{% endblock %}

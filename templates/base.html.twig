@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% block html %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+        <title>{% block title %}Tournesol{% endblock %}</title>
+        {% block stylesheets %}
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+          {{ encore_entry_link_tags('app') }}
+          {{ encore_entry_link_tags('main') }}
+        {% endblock %}
+    </head>
+    {% block body %}
+    <body class="{% block name %}noname-page{% endblock  name %}" onload="{% block onload %}{% endblock %}">
+
+        <div class="container is-fluid">
+          {% block menu %}
+            {% if app.user %}
+              {% include 'ui/menu/menu.html.twig' %}
+            {% endif %}
+          {% endblock %}
+
+          {% block page %}
+          {% endblock page %}
+        </div>
+
+
+        {% block javascripts %}
+          <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+          {{ encore_entry_script_tags('app') }}
+
+          {% block script %}
+            {# use to write javascript in template #}
+          {% endblock script %}
+        {% endblock %}
+        <div class="bottom-spacer"></div>
+    </body>
+    {% endblock body %}
+</html>
+{% endblock html %}

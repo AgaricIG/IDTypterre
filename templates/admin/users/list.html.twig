@@ -1,0 +1,39 @@
+{% extends 'admin/users/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li class="is-active"><a href="#">List</a></li>
+{% endblock arianne %}
+
+{% block page %}
+  <div class="columns align-end">
+    <div class="column is-4 py-0"><a class="button" href="{{ path('admin_user_create') }}">Créer un nouvel utilisateur</a></div>
+    <div class="column is-4 py-0"></div>
+    <div class="column is-4 py-0">
+      <form method="GET" class="form-search">
+        <div class="field">
+          <label for="search" class="label"></label>
+          <input type="text" name="search" class="input" onblur="this.form.submit()" placeholder="Search someone" value="{{ app.request.query.get('search') }}"></form>
+        </div>
+    </div>
+  </div>
+  <table class="table table-striped is-fullwidth is-narrow">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Fullname</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.username }}</td>
+      <td>{{ user.fullname }}</td>
+      <td>{{ user.email }}</td>
+      <td class="action"><a class="button is-link " href="{{ path('admin_user_edit', {id: user.id}) }}"> Modifier</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% include('ui/pagination/paginator.html.twig') with {'pagination': pagination} %}
+{% endblock %}

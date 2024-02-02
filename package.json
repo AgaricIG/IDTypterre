@@ -1,0 +1,36 @@
+{
+  "name": "tournesol-apisol",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "private": true,
+  "dependencies": {
+    "apisol-treemaker": "^0.2.4",
+    "apisol-treeviewer": "^0.2.13",
+    "axios": "^0.21.4",
+    "leaflet": "^1.7.1"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^1.8.2",
+    "bootstrap-sass": "^3.3.7",
+    "bootswatch": "^3.3.7",
+    "core-js": "^3.0.0",
+    "file-loader": "^6.0.0",
+    "imports-loader": "^0.8.0",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^1.2.1",
+    "svelte": "^3.55.0",
+    "svelte-loader": "^3.1.4",
+    "webpack-notifier": "^1.15.0"
+  },
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "hot": "encore dev-server --host 0.0.0.0 --public http://dev.local:8000 --port 8000 --disable-host-check --hot",
+    "build": "encore production --progress"
+  },
+  "author": "",
+  "license": "ISC"
+}

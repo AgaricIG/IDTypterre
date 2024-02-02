@@ -1,0 +1,14 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li><a href="{{ path('admin_question') }}">{{ env('MENU_IMG') }}</a></li>
+{% endblock arianne %}
+
+{% block title %}
+  Questions
+{% endblock %}
+
+{% block content %}
+  {{ parent() }}
+{% endblock %}

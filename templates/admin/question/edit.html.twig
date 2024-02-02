@@ -1,0 +1,86 @@
+{% extends 'admin/question/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li class="active"><a href="{{ path('admin_question_edit', {id: question.id}) }}">{{ question.libelle }}</a></li>
+{% endblock arianne %}
+
+{% block content %}
+
+      {{form_errors(form)}}
+      {{ form_start(form) }}
+          {{ form_row(form.libelle) }}
+
+
+          {{ form_row(form.media.type, { label: "Type de média"}) }}
+          {{ form_row(form.media.description) }}
+          {{ form_row(form.media.file) }}
+          {{ form_row(form.media.url) }}
+
+          <div style="display:none">
+            {{ form_rest(form) }}
+          </div>
+
+          <button type="button" class="button outlined" id="openCatalogue" onclick="openCatalogue">Catalogue des médias</button>
+
+          <div class="form-buttons buttons mt-10">
+            <button type="submit" class="button ">Sauvegarder</button>
+            <a class="button outlined" href="{{ path('admin_question') }}">Retour</a>
+            <a class="button is-outlined is-danger pull-right" href="{{ path('admin_question_delete', {id: question.id}) }}" onclick="return confirm('Voulez vous vraiment supprimer cette question ?')">Supprimer</a>
+          </div>
+      {{ form_end(form) }}
+
+      <div class="modal-box modal-media-catalogue">
+        <div class="title">Catalogue</div>
+        <div class="content">
+        {% for media in medias %}
+          {% include 'admin/media/ui_media_item.html.twig' with { 'media': media } %}
+        {% endfor %}
+        </div>
+        <div class="buttons">
+          <button type="button" class="button outlined" onclick="closeCatalogue()">Fermer</button>
+        </div>
+      </div>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+
+  _catalogueBtn = document.querySelector('#openCatalogue');
+  // move catalogue button
+  document.querySelector("#question_form_media_file").after(_catalogueBtn);
+  // add listener
+  _catalogueBtn.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    openCatalogue();
+  })
+
+  _catalogueBox = document.querySelector('.modal-media-catalogue');
+  _catalogueItems = document.querySelectorAll('.modal-media-catalogue .media');
+
+
+  _catalogueItems.forEach(item => {
+      item.addEventListener('click', () => selectCatalogueItem(item));
+  });
+
+  function openCatalogue() {
+    _catalogueBox.classList.add('open');
+  }
+
+  function closeCatalogue() {
+    _catalogueBox.classList.remove('open');
+  }
+
+  function selectCatalogueItem(item) {
+    console.log('selectCatalogueItem', item.dataset);
+    document.querySelector('#question_form_media_id').value = item.dataset.id;
+    document.querySelector('#question_form_media_description').value = item.dataset.description;
+    document.querySelector('#question_form_media_url').value = item.dataset.url;
+    if(item.dataset.type == 'image') document.querySelector('#question_form_media_type_0').checked = 'checked';
+    if(item.dataset.type == 'video') document.querySelector('#question_form_media_type_1').checked = 'checked';
+    closeCatalogue();
+  }
+
+</script>
+{% endblock %}

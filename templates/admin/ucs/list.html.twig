@@ -1,0 +1,43 @@
+{% extends 'admin/ucs/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+{% endblock arianne %}
+
+{% block content %}
+  <form method="GET" class="form-search">
+    <div class="field">
+      <input type="text" name="search" class="input" placeholder="Rechercher" value="{{ app.request.query.get('search') }}">
+      <button type="submit" class="button outlined">OK</button>
+      <a class="button" href="{{ path('admin_ucs_create') }}">Ajouter</a>
+      {% if withGeom|length > 0 %}
+      <a class="button outlined" href="{{ path('admin_ucs_map') }}">Tester sur la carte</a>
+      {% endif %}
+    </div>
+  </form>
+  <table class="table table-striped is-fullwidth is-narrow">
+    <thead>
+      <tr>
+        <th>Identifiant</th>
+        <th>Libellé</th>
+        <th></th>
+      </tr>
+    </thead>
+    {% for u in ucs %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td><strong>{{ u.name }}</strong> </td>
+      <td class="action">
+        {% if u.tree is empty %}
+        <a class="button link" href="{{ path('admin_ucs_maketree', {id: u.id}) }}"> Construire l'arbre</a>
+        <a class="button link disabled" href="{{ path('admin_ucs_viewtree', {id: u.id}) }}" title="L'arbre est vide..."> Consulter l'arbre</a>
+        {% else %}
+        <a class="button link" href="{{ path('admin_ucs_maketree', {id: u.id}) }}"> Modifier l'arbre</a>
+        <a class="button link" href="{{ path('admin_ucs_viewtree', {id: u.id}) }}"> Consulter l'arbre</a>
+        {% endif %}
+        <a class="button outlined" href="{{ path('admin_ucs_edit', {id: u.id}) }}">Modifier</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

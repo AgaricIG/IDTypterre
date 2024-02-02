@@ -1,0 +1,133 @@
+{% extends 'layout/default.html.twig' %}
+
+{% block content %}
+  <div id="app">
+    <div id="map"></div>
+    <div class="buttons">
+      <h1>Cliquez sur la carte <span class="geolocationAvailable">ou <button>Me géolocaliser</button></span></h1>
+    </div>
+  </div>
+  <div id="container-tree" class="container-tree treeviewer"></div>
+{% endblock content %}
+
+{% block script %}
+<script type="text/javascript">
+
+    /* =============
+     configuration APISOL Viewer
+    ==============*/
+    var apisol = new TreeViewer('#container-tree', {
+      options: {
+        sendReports: false,
+        ChangeUCS: true,
+        ConfirmUTS: false,
+      },
+      styles: {
+        tree: {
+          node: {},
+          root: {backgroundColor: '#e0c9b8 ', color:'#fff', borderRadius: '5', borderColor:'#ab8263', borderWidth:2},
+          leaf: {backgroundColor: '#bdc8d0 ', color:'#345571', borderRadius: '5', borderColor:'#d5e1ea', borderWidth:4},
+          current: {color: 'white', backgroundColor:'#437579', 'link': {'color': '#AAA', 'weight': 3}},
+        }
+      },
+      trans: {
+        'root_abbr': 'UC',
+        'root_title': 'Vous vous situez dans l\'Unité Cartographique suivante :',
+        'leaf_abbr': 'UTT',
+      },
+      urls: {
+        getucs: "/api/getucsatcoords?lat=__lat__&lng=__lon__&srid=__srid__",
+        gettree: "/api/gettree/__id__",
+        getquestion: "/api/getquestion/__ucs__/__id__",
+        getuts: "/api/getuts/__id__",
+        //getutt: 'http://apisol.agrocampus-ouest.fr/apisol-wps?service=WPS&version=1.0.0&request=execute&identifier=getutt&datainputs=id_ucs=__ucs__;id_node=__idquestion__&rawdataoutput=getutt',
+        //getc4c: 'http://apisol.agrocampus-ouest.fr/apisol-wps?service=WPS&version=1.0.0&request=execute&identifier=getqcri&datainputs=qcri=__c4c__;id_ucs=__ucs__;dep=__dep__;__coords__&rawdataoutput=utslisteqcri',
+        //setuts: "{{ path('api_setuts', {uts: '__uts__', session:'__session__', level:'__level__', profil:'__profil__', branche:'__branche__', coords:'__coords__' }) }}",
+        //setuts: 'http://apisol.agrocampus-ouest.fr/apisol-wps?service=WPS&version=1.0.0&request=execute&identifier=setuts&datainputs=id_uts=__uts__;id_session=__session__;level=__level__;profil=__profil__;branche=__branche__;__coords__&rawdataoutput=setutsreponse',
+        }
+    });
+
+    /* evenements APISOL Viewer */
+    apisol.$on('apisol:open', function(ev) { console.log('[Event] apisol:open', ev.detail) });
+    apisol.$on('apisol:ucs:selection', function(ev) { console.log('[Event] apisol:ucs:selection', ev.detail);})
+    apisol.$on('apisol:questions:loaded', function(ev) { console.log('[Event] apisol:questions:loaded', ev.detail) });
+    apisol.$on('apisol:question', function(ev) { console.log('[Event] apisol:question', ev.detail);})
+    apisol.$on('apisol:question:answered', function(ev) { console.log('[Event] apisol:question:answered', ev.detail);})
+    apisol.$on('apisol:uts:found', function(ev) { console.log('[Event] apisol:uts:found', ev.detail);})
+    apisol.$on('apisol:uts:confirm', function(ev) { console.log('[Event] apisol:uts:confirm', ev.detail);})
+    apisol.$on('apisol:close', function(ev) { console.log('[Event] apisol:close', ev.detail) });
+
+
+
+
+
+
+    /*===============
+      Leaflet
+    ================*/
+    var map = L.map('map').setView([48.2429, 6.7953], 9);
+    var marker;
+    var markerIcon = L.icon({
+                iconSize: [25, 40],
+                iconAnchor: [12.5, 40],
+                iconUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII='
+    })
+
+    L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+    })
+    .addTo(map);
+    map.on('click', onMapClick);
+
+    {#===============
+      Geojson of UCS
+      - throw PHP error: limit memory
+      - throw leaflet error: Polygons and MultiPolygons should follow the right-hand rule
+      - native postgis coordinates should be in SRID 4326
+    ================
+    {% for i,uc in ucs %}
+      {% if uc.geom %}
+        L.geoJSON(`{{ uc.geom.toJson()|raw }}`).addTo(map);
+      {% endif %}
+    {% endfor %}
+    #}
+
+    function onMapClick(ev) {
+      let lat = ev.latlng.lat;
+      let lon = ev.latlng.lng;
+      console.log('Click on map:', {lat}, {lon});
+
+      addMarker(lat, lon);
+      apisol.openAtCoords(lat, lon);
+    }
+
+
+    /*=============
+    geolocation (beta)
+    =============== */
+    if ("geolocation" in navigator) {
+      document.querySelector('.geolocationAvailable button').addEventListener('click', requestPosition);
+    } else {
+      document.querySelectorAll('.geolocationAvailable').forEach(el => el.style.display = 'none');
+    }
+
+    function requestPosition() {
+      navigator.geolocation.getCurrentPosition(onPositioning, handleErrorPosition, {maximunAge: 0, enableHighAccuracy: true, timeout: 300000});
+    }
+
+    function onPositioning(position) {
+      apisol.openAtCoords(position.coords.latitude, position.coords.longitude);
+      addMarker(position.coords.latitude, position.coords.longitude);
+    }
+
+    function handleErrorPosition(error) {
+      console.error(error);
+    }
+
+    function addMarker(lat, lon) {
+      if(marker) map.removeLayer(marker);
+      marker = new L.marker([lat,lon], {icon: markerIcon}).addTo(map);
+    }
+
+</script>
+{% endblock %}

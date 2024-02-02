@@ -1,0 +1,14 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li><a href="{{ path('admin_appli') }}">{{ env('MENU_APP') }}</a></li>
+{% endblock arianne %}
+
+{% block title %}
+  Applications externes
+{% endblock %}
+
+{% block content %}
+  {{ parent() }}
+{% endblock %}

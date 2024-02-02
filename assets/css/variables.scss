@@ -1,0 +1,8 @@
+$primary-color: rgb(209,138,0);
+$brand-color: rgb(212, 151, 28);
+
+$btn-background: $primary-color;
+$btn-background__active: darken($primary-color, 10%);
+$btn-color: #fff;
+$btn-color__active: #fff;
+$btn-border-color: darken($primary-color, 5%);

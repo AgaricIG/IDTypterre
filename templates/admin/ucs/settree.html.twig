@@ -1,0 +1,49 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+  <li><a href="{{ path('admin_ucs') }}">{{ env('MENU_UCS') }}</a></li>
+  <li class="active"><a href=""><i>{{ ucs.name }}</i></a></li>
+{% endblock arianne %}
+
+{% block title %}
+  {{ ucs.name }}
+{% endblock %}
+
+{% block content %}
+      <div id="container-tree" class="container-tree treemaker"></div>
+{% endblock %}
+
+{% block onload %}
+  initTreeMaker();
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+
+    // json de l'arbre de décision
+    let json = {% if ucs.tree and ucs.tree|length > 0 %}{{ ucs.tree|json_encode()|raw }}{% else %}null{% endif %};
+
+    // init onload
+    function initTreeMaker() {
+      window.TreeMaker({
+        container: '#container-tree',
+        root_id: '{{ ucs.id }}',
+        root_name: '{{ ucs.name }}',
+        root_abbr: 'UC',
+        leaf_abbr: 'UTT',
+        url_save_tree: '{{ url("admin_ucs_settree", {id: ucs.id}) }}',
+        url_save_node: '{{ url("admin_tree_change") }}',
+        url_save_nodefile: '{{ url("admin_tree_upload") }}',
+        list_leafs: {{ list_uts|json_encode()|raw }},
+        list_questions: {{ list_questions|json_encode()|raw }},
+        tree_json: json,
+        tree_current_node: (json) ? json.reponses[0] : null,
+        tree_style_root: {backgroundColor: '#e3eeef ', color:'#437579', borderRadius: '5', borderColor:'#437579', borderWidth:2},
+        tree_style_leaf: {backgroundColor: '#dd4b39 ', color:'white', borderRadius: '5', borderColor:'#da8378', borderWidth:5},
+        tree_style_current: {color: 'white', backgroundColor:'#437579', 'link': {'color': '#AAA', 'weight': 3}},
+      });
+    }
+
+  </script>
+{% endblock %}

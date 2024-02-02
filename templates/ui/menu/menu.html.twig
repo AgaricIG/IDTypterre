@@ -1,0 +1,19 @@
+<nav class="topbar">
+    <a class="brand" href="/">{{ env('BRAND_NAME')}}</a>
+
+    <div class="container menu">
+      <a class="button {% if app.request.get('_route') == 'admin_ucs' %}active{% endif %}" href="{{ path('admin_ucs') }}">{{ env('MENU_UCS') }}</a>
+      <a class="button {% if app.request.get('_route') == 'admin_uts' %}active{% endif %}" href="{{ path('admin_uts') }}">{{ env('MENU_UTS') }}</a>
+      <a class="button {% if app.request.get('_route') == 'admin_question' %}active{% endif %}" href="{{ path('admin_question') }}">{{ env('MENU_QTS') }}</a>
+      <a class="button {% if app.request.get('_route') == 'admin_media' %}active{% endif %}" href="{{ path('admin_media') }}">{{ env('MENU_IMG') }}</a>
+      <a class="button {% if app.request.get('_route') == 'admin_appli' %}active{% endif %}" href="{{ path('admin_appli') }}">{{ env('MENU_APP') }}</a>
+    </div>
+
+    <ul>
+      {% if app.user %}
+      <li><a class="button" href="{{ path('app_logout') }}">Se déconnecter</a></li>
+      {% else %}
+      <li><a class="button" href="{{ path('admin') }}">Administration</a></li>
+      {% endif %}
+    </ul>
+</nav>

@@ -1,0 +1,7 @@
+<div class="flash">
+{% for type,messages in flashes %}
+  {% for message in messages %}
+    {% include 'ui/flash/one.html.twig' with {'type':type, 'message':message, 'animated':false } %}
+  {% endfor %}
+{% endfor %}
+</div>

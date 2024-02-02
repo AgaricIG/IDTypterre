@@ -1,0 +1,38 @@
+{% extends 'admin/appli/layout.html.twig' %}
+
+{% block arianne %}
+  {{ parent() }}
+{% endblock arianne %}
+
+{% block content %}
+  <form method="GET" class="form-search">
+    <div class="field">
+      <input type="text" name="search" class="input" placeholder="Rechercher" value="{{ app.request.query.get('search') }}">
+      <button type="submit" class="button outlined">OK</button>
+      <a class="button" href="{{ path('admin_appli_create') }}">Ajouter</a>
+    </div>
+  </form>
+  <table class="table table-striped is-fullwidth is-narrow">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom </th>
+        <th>URL de base (referer)</th>
+        <th>Clef API</th>
+        <th></th>
+      </tr>
+    </thead>
+    {% for a in applis %}
+    <tr>
+      <td>{{ a.id }}</td>
+      <td>{{ a.name }}</td>
+      <td>{{ a.url }}</td>
+      <td>{{ a.apikey }}</td>
+      <td class="action">
+        <a class="button outlined" href="{{ path('admin_appli_edit', {id: a.id}) }}"> Modifier</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% include('ui/pagination/paginator.html.twig') with {'pagination': pagination} %}
+{% endblock %}
