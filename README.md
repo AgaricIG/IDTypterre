@@ -1,4 +1,4 @@
-![logo IDTypterre](public/images/IDTypTerres.png?raw=true "Logo")
+![logo IDTypterre](public/images/IDTypTerres.png?raw=true "Logo IDTypterre" =640x120)
 
 # Description du projet
 
