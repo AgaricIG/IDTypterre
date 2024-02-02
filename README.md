@@ -1,4 +1,4 @@
-![](public/images/IDTypTerres.png)
+![](./public/images/IDTypTerres.png)
 
 # Description du projet
 
