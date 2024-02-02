@@ -8,16 +8,21 @@ Le projet est décrit plus en détail ici https://sols-et-territoires.org/projet
 
 L'Application IDTypterre est une application qui permet de saisir les clés de détermination et de les publier via une API et une applicaiton embarquée.
 
+# Environnement
+L'application a été développée pour fonctionner dans un environnement Debian ou Ubuntu. 
+
 # Installation
-### requirements:
+### Pré-requis:
 - apache2
 - php >=8.1
 - composer >=2
 - node >= 16
 - npm >=8
+- postgresql-15
+- postgis
 
  ### installer le code source:
-`git clone [url_du_repository] dir`
+`git clone https://github.com/AgaricIG/IDTypterre.git`
 
 ### installer les dépendances PHP
 ```
@@ -26,9 +31,22 @@ composer install
 ```
 
 ### configurer le .env
-`nano .env`
+`vi .env`
 remplir les paramètres de connexion à la base de données
 et optionnellement changer la nomenclature de l'appli
+
+    BRAND_NAME="IDTYPETERRE Mon Organisme - Saisie des clés"
+    UCS="Unité Cartographique"
+    UTS="Type de sol"
+    UCS_ID_PREFIX="UCS_RXX"
+    UTS_ID_PREFIX="UTS_RXX"
+    MENU_UCS="Unités cartographiques"
+    MENU_UTS="Types de sol"
+    MENU_QTS="Questions"
+    MENU_IMG="Médias"
+    MENU_APP="Applications"
+    DATABASE_URL=postgresql://user:pass@host:port/db_idtypterre?serverVersion=15`
+
 
 ### construire la base de donnée
 `php bin/console doctrine:schema:update --force`
@@ -61,16 +79,15 @@ ouvrir les droits d'écriture pour l'utilisateur apache (www-data) sur les dossi
 
 # Troubleshoot
 ### CORS:
-Si problème de CORS Allow-Origin, configurer le paramêtre CORS_ALLOW_ORIGIN dans `.e
-nv`
+Si problème de CORS Allow-Origin, configurer le paramêtre CORS_ALLOW_ORIGIN dans `.env`
 (pour plus de configuration voir fichier `./config/packages/nelmio_cors.yaml`)
 
 # Commands
-Pour ajouter un utilisateur :
+- Pour ajouter un utilisateur :
 `php bin/console create:user`
-Pour change un mot de passe:
+- Pour change un mot de passe:
 `php bin/console change:password`
-Pour voir la liste des utilisateurs
+- Pour voir la liste des utilisateurs
 `php bin/console print:user`
 
 
