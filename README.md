@@ -1,4 +1,5 @@
 ![logo IDTypterre](public/images/IDTypTerres.png?raw=true "Logo IDTypterre" =640x120)
+<img src="https://github.com/AgaricIG/IDTypterre/blob/main/public/images/IDTypTerres.png" alt="Logo IDTypterre" width="50%"/>
 
 # Description du projet
 
